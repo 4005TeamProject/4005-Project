@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d866cfac-3f8b-4150-b1fa-272f94369df6" name="Default Changelist" comment="" />
+    <list default="true" id="dd9264ae-2be3-4b45-a37c-fc2f97acfec8" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
+    <option name="UPDATE_TYPE" value="MERGE" />
   </component>
-  <component name="ProjectId" id="1p8CDGdClzd4qjaJ1HyMYLTYHeM" />
+  <component name="ProjectId" id="1p8Ac6QXuKi8eplST0Vr1OyAmwM" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -20,7 +28,10 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Lab3.5" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
   </component>
   <component name="ServiceViewManager">
@@ -40,12 +51,38 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="d866cfac-3f8b-4150-b1fa-272f94369df6" name="Default Changelist" comment="" />
-      <created>1614555208588</created>
+      <changelist id="dd9264ae-2be3-4b45-a37c-fc2f97acfec8" name="Default Changelist" comment="" />
+      <created>1614554419766</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1614555208588</updated>
+      <updated>1614554419766</updated>
     </task>
     <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="552" y="182" key="#Project_Structure" timestamp="1614554446579">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="182" key="#Project_Structure/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1614554446579" />
+    <state x="627" y="121" key="CommitChangelistDialog2" timestamp="1614555087704">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="627" y="121" key="CommitChangelistDialog2/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1614555087704" />
+    <state x="740" y="265" key="FileChooserDialogImpl" timestamp="1614555110658">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="265" key="FileChooserDialogImpl/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1614555110658" />
+    <state x="627" y="226" key="NewModule_or_Project.wizard" timestamp="1614555208551">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="627" y="226" key="NewModule_or_Project.wizard/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1614555208551" />
+    <state x="552" y="257" key="Vcs.Push.Dialog.v2" timestamp="1614555097207">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="257" key="Vcs.Push.Dialog.v2/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1614555097207" />
+    <state x="771" y="440" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1614555241052">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="771" y="440" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1614555241052" />
   </component>
 </project>
