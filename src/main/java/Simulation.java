@@ -22,7 +22,7 @@ public class Simulation {
     private Queue<String> c2w2;
     private Queue<String> c3w3;
 
-    //amounts of products p1, p2, and p3 produced. 
+    //amounts of products p1, p2, and p3 produced.
     private int p1;
     private int p2;
     private int p3;
@@ -42,6 +42,10 @@ public class Simulation {
 
         clock = 0; //start clock at 0
 
+        boolean I1isBusy;
+        boolean I2isBusy;
+        double I2busyTime;
+        double I1busyTime;
         c1w1 = new PriorityBlockingQueue<String>(QUEUE_CAP);
         c1w2 = new PriorityBlockingQueue<String>(QUEUE_CAP);
         c1w3 = new PriorityBlockingQueue<String>(QUEUE_CAP);
