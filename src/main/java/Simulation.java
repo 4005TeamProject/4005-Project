@@ -9,7 +9,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 public class Simulation {
 
     public Simulation(){
-
+        initialize();
     }
 
     //The five queues for components
@@ -21,6 +21,11 @@ public class Simulation {
     private Queue<String> c1w3;
     private Queue<String> c2w2;
     private Queue<String> c3w3;
+
+    //amounts of products p1, p2, and p3 produced. 
+    private int p1;
+    private int p2;
+    private int p3;
 
     //Filereaders for the time data files
     private BufferedReader servinsp23Reader;
