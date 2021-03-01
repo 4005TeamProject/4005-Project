@@ -1,11 +1,16 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
 public class Simulation {
+
+    public Simulation(){
+
+    }
 
     //The five queues for components
     //naming convention cXwX ==> cX = component type I.e. C1, C2 or C3. wX = workstation I.e. W1, W2 or W3.
@@ -25,8 +30,13 @@ public class Simulation {
     private BufferedReader ws2Reader;
     private BufferedReader ws3Reader;
 
+    private double clock;
+
 
     private void initialize(){
+
+        clock = 0; //start clock at 0
+
         c1w1 = new PriorityBlockingQueue<String>(QUEUE_CAP);
         c1w2 = new PriorityBlockingQueue<String>(QUEUE_CAP);
         c1w3 = new PriorityBlockingQueue<String>(QUEUE_CAP);
@@ -47,6 +57,52 @@ public class Simulation {
     }
 
     public void run(){
+        initialize();
+        //Simulation code goes here
 
+        generateReport();
+
+    }
+
+    private void generateReport() {
+    }
+
+    // different events ALS1, ALS2, ELS1,ELS2,ALW1, ALW2, ALW3, ELW1, ELW2, ELW3, ES
+    private void ScheduleEvent(SimEvent.eventType eType) throws IOException {
+        Double timeElapsed = -1.0;
+        switch (eType) {
+//            case ALS1:
+//                timeElapsed = 0.0;
+//                break;
+//            case ALS2:
+//                timeElapsed = 0.0;
+//                break;
+            case ELS1:
+                timeElapsed = Double.parseDouble(servinsp1Reader.readLine());
+                break;
+            case ELS2:
+                timeElapsed = Double.parseDouble(servinsp22Reader.readLine());
+                timeElapsed = Double.parseDouble(servinsp23Reader.readLine());
+                break;
+//            case ALW1:
+//                timeElapsed = Double.parseDouble(servinsp23Reader.readLine());
+//                break;
+//            case ALW2:
+//                break;
+//            case ALW3:
+//                break;
+            case ELW1:
+                timeElapsed = Double.parseDouble(ws1Reader.readLine());
+                break;
+            case ELW2:
+                timeElapsed = Double.parseDouble(ws1Reader.readLine());
+                break;
+            case ELW3:
+                timeElapsed = Double.parseDouble(ws1Reader.readLine());
+                break;
+            case ES:
+                break;
+        }
+        SimEvent newEVT = new SimEvent(eType,clock+timeElapsed);
     }
 }

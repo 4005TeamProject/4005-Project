@@ -7,11 +7,12 @@ public class SimEvent implements Comparable<SimEvent> {
      * ELW1=Product exits workstation 1, ELW2=Product exits workstation 2, ELW3=Product exits workstation 3
      * ES=End of Simulation
      */
+
     public static enum eventType {ALS1, ALS2, ELS1,ELS2,ALW1, ALW2, ALW3, ELW1, ELW2, ELW3, ES};
     private eventType eventType;        // Type of the event
-    private Integer eventTime;          // Event Time
+    private Double eventTime;          // Event Time
 
-    public SimEvent(eventType eventType, int eventTime) {
+    public SimEvent(eventType eventType, double eventTime) {
         this.eventType = eventType;
         this.eventTime = eventTime;
     }
@@ -29,11 +30,11 @@ public class SimEvent implements Comparable<SimEvent> {
         this.eventType = eventType;
     }
 
-    public Integer getEventTime() {
+    public Double getEventTime() {
         return eventTime;
     }
 
-    public void setEventTime(int eventTime) {
+    public void setEventTime(Double eventTime) {
         this.eventTime = eventTime;
     }
 }
