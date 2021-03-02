@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -11,6 +13,9 @@ public class Simulation {
     public Simulation(){
         initialize();
     }
+
+    //Future Event List
+    private List<SimEvent> fel;
 
     //The five queues for components
     //naming convention cXwX ==> cX = component type I.e. C1, C2 or C3. wX = workstation I.e. W1, W2 or W3.
@@ -41,7 +46,7 @@ public class Simulation {
     private void initialize(){
 
         clock = 0; //start clock at 0
-
+        fel = new LinkedList<>();
         boolean I1isBusy;
         boolean I2isBusy;
         double I2busyTime;
