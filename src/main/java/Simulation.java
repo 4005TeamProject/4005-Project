@@ -73,7 +73,13 @@ public class Simulation {
     public void run(){
         initialize();
         //Simulation code goes here
-
+        while(!fel.isEmpty()){
+            SimEvent incomingEvent = fel.poll();
+            clock = incomingEvent.getEventTime();
+            //executeevent
+            //generate new event + insert into fel
+            generateReport();
+        }
         generateReport();
 
     }
