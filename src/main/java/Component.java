@@ -5,7 +5,7 @@ public class Component {
     placed in a buffer to a workstation and workstation is when the component is consumed and a
     product is created.
      */
-    public enum serviceType {Inspection, Buffer, Workstation}
+    public enum serviceType {Waiting, Inspection, Buffer, Workstation}
 
     private int componentID;
     private int componentNumber; // {1, 2, 3}

@@ -14,6 +14,14 @@ public class SimEvent implements Comparable<SimEvent> {
     private Double eventTime;          // Event Time
     private Component component;    //the component
 
+    public Component getComponent() {
+        return component;
+    }
+
+    public void setComponent(Component component) {
+        this.component = component;
+    }
+
     public SimEvent(eventType eventType, double eventTime, Component component) {
         this.eventType = eventType;
         this.eventTime = eventTime;
