@@ -1,15 +1,15 @@
 public class SimEvent implements Comparable<SimEvent> {
 
     /*
-     * ALS1=Arrival at Inspector1, ALS2=Arrival at Inspector2,
-     * ELS1=End of inspection at Inspector1, ELS2=End of inspection at Inspector2
+     * AI1=Arrival at Inspector1, AI2=Arrival at Inspector2,
+     * EI1=End of inspection at Inspector1, ELS2=End of inspection at Inspector2
      * BUF = Buffering between inspection and workstation
-     * ALW1=Arrival at workstation 1, ALW2=Arrival at workstation 2, ALW3=Arrival at workstation 3
-     * ELW1=Product exits workstation 1, ELW2=Product exits workstation 2, ELW3=Product exits workstation 3
+     * AW1=Arrival at workstation 1, AW2=Arrival at workstation 2, AW3=Arrival at workstation 3
+     * EW1=Product exits workstation 1, EW2=Product exits workstation 2, EW3=Product exits workstation 3
      * ES=End of Simulation
      */
 
-    public static enum eventType {ALS1, ALS2, BUF, ELS1,ELS2,ALW1, ALW2, ALW3, ELW1, ELW2, ELW3, ES};
+    public static enum eventType {AI1, AI2, EI1,EI2, BUF, AW1, AW2, AW3, EW1, EW2, EW3, ES};
     private eventType eventType;        // Type of the event
     private Double eventTime;          // Event Time
 
