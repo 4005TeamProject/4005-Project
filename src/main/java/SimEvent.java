@@ -12,10 +12,12 @@ public class SimEvent implements Comparable<SimEvent> {
     public static enum eventType {AI1, AI2, EI1,EI2, BUF, AW1, AW2, AW3, EW1, EW2, EW3, ES};
     private eventType eventType;        // Type of the event
     private Double eventTime;          // Event Time
+    private Component component;    //the component
 
-    public SimEvent(eventType eventType, double eventTime) {
+    public SimEvent(eventType eventType, double eventTime, Component component) {
         this.eventType = eventType;
         this.eventTime = eventTime;
+        this.component = component;
     }
 
     @Override
