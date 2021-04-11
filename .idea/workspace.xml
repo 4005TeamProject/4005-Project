@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="dd9264ae-2be3-4b45-a37c-fc2f97acfec8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Component.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Component.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SimEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SimEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Simulation.java" afterDir="false" />
     </list>
@@ -105,16 +105,5 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="342" y="225" key="new project wizard/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1614555943338" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Simulation.java</url>
-          <line>191</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

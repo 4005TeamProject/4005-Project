@@ -9,7 +9,7 @@ public class SimEvent implements Comparable<SimEvent> {
      * ES=End of Simulation
      */
 
-    public static enum eventType {AI1, AI2, EI1,EI2, BUF, AW1, AW2, AW3, EW1, EW2, EW3, ES};
+    public static enum eventType {AI1, AI2, EI1,EI2, BUF, EW1, EW2, EW3, ES};
     private eventType eventType;        // Type of the event
     private Double eventTime;          // Event Time
     private Component component;    //the component

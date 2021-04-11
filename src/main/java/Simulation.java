@@ -132,20 +132,8 @@ public class Simulation {
             case EI2:
                 ProcessEI2(imminentEvent);
                 break;
-            case BUF:
-                ProcessBUF(imminentEvent);
-                break;
-            case AW1:
-                ProcessAW1(imminentEvent);
-                break;
-            case AW2:
-                ProcessAW2(imminentEvent);
-                break;
-            case AW3:
-                ProcessAW3(imminentEvent);
-                break;
             case EW1:
-                ProcessAEW1(imminentEvent);
+                ProcessEW1(imminentEvent);
                 break;
             case EW2:
                 ProcessEW2(imminentEvent);
@@ -159,20 +147,109 @@ public class Simulation {
         }
     }
 
+    private static void ProcessES(SimEvent imminentEvent) {
+        System.out.print("Simulation finished at: " + clock + "\nProduct1 produced = " + p1
+                + "\nProduct2 produced = " + p2 + "\nProduct3 produced = " + p3);
+    }
+
+    private static void ProcessEW3(SimEvent imminentEvent) {
+        if(!c1w3.isEmpty() && !c3w3.isEmpty()){
+            Component componentConsumed = c1w3.poll();
+            Component componentConsumed2 = c3w3.poll();
+            p3 += 1;
+            isW3busy = false;
+            System.out.print("Time: " + clock + "Product3 produced");
+        }
+    }
+
+    private static void ProcessEW2(SimEvent imminentEvent) {
+        if(!c1w2.isEmpty() && !c2w2.isEmpty()){
+            Component componentConsumed = c1w2.poll();
+            Component componentConsumed2 = c2w2.poll();
+            System.out.print("Time: " + clock + "Product2 produced");
+            p2 += 1;
+            isW2busy = false;
+        }
+    }
+
+    private static void ProcessEW1(SimEvent imminentEvent) {
+        if(!c1w1.isEmpty()){
+            Component componentConsumed = c1w1.poll();
+            componentConsumed.setCurrentLocation(Component.serviceType.Workstation);
+            System.out.print("Time: " + clock + "Product1 produced");
+            p1 += 1;
+            isW1busy = false;
+        }
+    }
+
+    private static void ProcessEI2(SimEvent imminentEvent) {
+        if(imminentEvent.getComponent().getComponentNumber() == 2){
+            if(c2w2.size() < 2){
+                imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Buffer);
+                c2w2.offer(imminentEvent.getComponent());
+                double WET = getRandomTime(WTD, RNGWork2);
+                SimEvent evt = new SimEvent(SimEvent.eventType.EW2, clock+WET, imminentEvent.getComponent());
+                FEL.offer(evt);
+                evt = new SimEvent(SimEvent.eventType.AI1, 0, imminentEvent.getComponent());
+                FEL.offer(evt);
+                isI2busy = false;
+                isW2busy = true;
+            }else {
+                imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Inspection);
+                //TODO need to block the inspector somehow
+            }
+        }else if(imminentEvent.getComponent().getComponentNumber() == 3) {
+            if (c3w3.size() < 2) {
+                imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Buffer);
+                c3w3.offer(imminentEvent.getComponent());
+                double WET = getRandomTime(WTD, RNGWork3);
+                SimEvent evt = new SimEvent(SimEvent.eventType.EW3, clock+WET, imminentEvent.getComponent());
+                FEL.offer(evt);
+                evt = new SimEvent(SimEvent.eventType.AI2, 0, imminentEvent.getComponent());
+                FEL.offer(evt);
+                isI2busy = false;
+                isW3busy = true;
+            }else{
+                imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Inspection);
+                isI2busy = true;
+                //TODO need to block the inspector somehow
+            }
+        }
+    }
+
     //Component 1 leaves inspector 1 and enters shortest queue
     private static void ProcessEI1(SimEvent imminentEvent) {
-        if(c1w1.size() < c1w2.size() && c1w1.size() < c1w3.size() && c1w1.size() < 2){
+        if(c1w1.size() < 2 && c1w1.size() < c1w2.size() && c1w1.size() < c1w3.size()){
             imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Buffer);
             c1w1.offer(imminentEvent.getComponent());
-        }else if(c1w2.size() < c1w1.size() && c1w2.size() < c1w3.size() && c1w2.size() < 2){
+            double WET = getRandomTime(WTD, RNGWork1);
+            SimEvent evt = new SimEvent(SimEvent.eventType.EW1, clock+WET, imminentEvent.getComponent());
+            FEL.offer(evt);
+            evt = new SimEvent(SimEvent.eventType.AI1, 0, c1w1.poll());
+            FEL.offer(evt);
+            isI1busy = false;
+            isW1busy = true;
+        }else if(c1w2.size() < 2 && c1w2.size() < c1w1.size() && c1w2.size() < c1w3.size() ){
             imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Buffer);
             c1w2.offer(imminentEvent.getComponent());
-        }else if(c1w3.size() < c1w1.size() && c1w3.size() < c1w2.size() && c1w2.size() < 2){
+            double WET = getRandomTime(WTD, RNGWork2);
+            SimEvent evt = new SimEvent(SimEvent.eventType.EW2, clock+WET, imminentEvent.getComponent());
+            FEL.offer(evt);
+            evt = new SimEvent(SimEvent.eventType.AI1, 0, c1w2.poll());
+            FEL.offer(evt);
+            isI1busy = false;
+        }else if(c1w2.size() < 2 && c1w3.size() < c1w1.size() && c1w3.size() < c1w2.size() ){
             imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Buffer);
             c1w3.offer(imminentEvent.getComponent());
+            double WET = getRandomTime(WTD, RNGWork3);
+            SimEvent evt = new SimEvent(SimEvent.eventType.EW3, clock+WET, imminentEvent.getComponent());
+            FEL.offer(evt);
+            evt = new SimEvent(SimEvent.eventType.AI1, 0, c1w3.poll());
+            FEL.offer(evt);
+            isI1busy = false;
         }else{
             imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Inspection);
-            //TODO need to block the inspector somehow
+            isI1busy = true;
         }
     }
 
