@@ -88,6 +88,7 @@ public class Simulation {
 
         initialization();
 
+        //Main while loop
         while ((currentDay<=simDay) && (!FEL.isEmpty())){
             SimEvent imminentEvent = FEL.poll();
             clock = imminentEvent.getEventTime();
@@ -136,33 +137,28 @@ public class Simulation {
     }
 
     private static void ProcessEW3(SimEvent imminentEvent) {
-        if(!c1w3.isEmpty() && !c3w3.isEmpty()){
             Component componentConsumed = c1w3.poll();
             Component componentConsumed2 = c3w3.poll();
             p3 += 1;
             isW3busy = false;
             System.out.print("Time: " + clock + "Product3 produced");
-        }
     }
 
     private static void ProcessEW2(SimEvent imminentEvent) {
-        if(!c1w2.isEmpty() && !c2w2.isEmpty()){
             Component componentConsumed = c1w2.poll();
             Component componentConsumed2 = c2w2.poll();
             System.out.print("Time: " + clock + "Product2 produced");
             p2 += 1;
             isW2busy = false;
-        }
+
     }
 
     private static void ProcessEW1(SimEvent imminentEvent) {
-        if(!c1w1.isEmpty()){
             Component componentConsumed = c1w1.poll();
             componentConsumed.setCurrentLocation(Component.serviceType.Workstation);
             System.out.print("Time: " + clock + "Product1 produced");
             p1 += 1;
             isW1busy = false;
-        }
     }
 
     private static void ProcessEI2(SimEvent imminentEvent) {
