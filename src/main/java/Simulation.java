@@ -34,10 +34,12 @@ public class Simulation {
     //inspector/workstation is busy or not
     private static boolean isI1busy, isI2busy, isW1busy, isW2busy, isW3busy;
 
+    /**
+     * ************************Please Help Here*******************************
+     */
     //Simulation inputs + any function used to get these random variables.
     private static double[][] ITD = {}; //Inspection times go here (minutes, cumulative probability)
     private static double[][] WTD = {}; //Workstation times go here
-    private static double[][] BTD = {}; //Buffer time dist
 
     //Variables for the required metrics, statistics, and counters (B = busy, U = util)
     private static double BI1, BI2, BW1, BW2, BW3, UI1, UI2, UW1, UW2, UW3, p1, p2, p3;
@@ -93,16 +95,16 @@ public class Simulation {
         p2 = 0;
         p3 = 0;
 
-        try {
-            servInsp1Reader = new BufferedReader(new FileReader("servinsp1.txt"));
-            servInsp22Reader = new BufferedReader(new FileReader("servinsp22.txt"));
-            servInsp23Reader = new BufferedReader(new FileReader("servinsp23.txt"));
-            ws1Reader = new BufferedReader(new FileReader("ws1.txt"));
-            ws2Reader = new BufferedReader(new FileReader("ws2.txt"));
-            ws3Reader = new BufferedReader(new FileReader("ws3.txt"));
-        }catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            servInsp1Reader = new BufferedReader(new FileReader("servinsp1.txt"));
+//            servInsp22Reader = new BufferedReader(new FileReader("servinsp22.txt"));
+//            servInsp23Reader = new BufferedReader(new FileReader("servinsp23.txt"));
+//            ws1Reader = new BufferedReader(new FileReader("ws1.txt"));
+//            ws2Reader = new BufferedReader(new FileReader("ws2.txt"));
+//            ws3Reader = new BufferedReader(new FileReader("ws3.txt"));
+//        }catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
 
         initialization();

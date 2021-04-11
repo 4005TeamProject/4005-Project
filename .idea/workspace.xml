@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="dd9264ae-2be3-4b45-a37c-fc2f97acfec8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SimEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SimEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Simulation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,6 +36,20 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Simulation" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Simulation" />
+      <module name="4005-Project" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Simulation" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -85,6 +97,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="265" key="FileChooserDialogImpl/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1614560003893" />
+    <state width="1865" height="518" key="GridCell.Tab.0.bottom" timestamp="1618099448632">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1865" height="518" key="GridCell.Tab.0.bottom/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1618099448632" />
+    <state width="1865" height="518" key="GridCell.Tab.0.center" timestamp="1618099448632">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1865" height="518" key="GridCell.Tab.0.center/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1618099448632" />
+    <state width="1865" height="518" key="GridCell.Tab.0.left" timestamp="1618099448631">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1865" height="518" key="GridCell.Tab.0.left/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1618099448631" />
+    <state width="1865" height="518" key="GridCell.Tab.0.right" timestamp="1618099448632">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1865" height="518" key="GridCell.Tab.0.right/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1618099448632" />
     <state x="627" y="226" key="NewModule_or_Project.wizard" timestamp="1614555208551">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
