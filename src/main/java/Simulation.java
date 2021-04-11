@@ -135,6 +135,41 @@ public class Simulation {
         FEL.offer(evt);  //Add EI1 to fel
     }
 
+    //Component 1 leaves inspector 1 and enters shortest queue
+    private static void ProcessEI1(SimEvent imminentEvent) {
+        if(c1w1.size() == 2 && c1w2.size()==2 && c1w3.size()==2){
+            isI1Blocked = true;
+            i1IdleTime += clock;
+        }else{
+            if(isI1Blocked){
+                i1IdleTime -= clock;
+                isI1Blocked = false;
+            }
+            int smallest = getSmallestQueue();
+            switch(smallest){
+                case 1:
+                    if(c1w1.size() < 2) {
+                        c1w1.offer(imminentEvent.getComponent());
+                    }
+                    break;
+                case 2:
+                    if(c1w2.size() < 2) {
+                        c1w2.offer(imminentEvent.getComponent());
+                    }
+                    break;
+                case 3:
+                    if(c1w3.size() < 2) {
+                        c1w3.offer(imminentEvent.getComponent());
+                    }
+                    break;
+            }
+
+            SimEvent newEvent = new SimEvent(SimEvent.eventType.AW1, clock + 0, imminentEvent.getComponent());
+            FEL.offer(newEvent); //Schedule arrival at workstation AW1
+            newEvent = new SimEvent(SimEvent.eventType.AI1, clock + getRandomTime(insp1Lambda), Component.getComponent(1)); //get next component for inspection AI1
+        }
+    }
+
     private static void ProcessEI2(SimEvent imminentEvent) {
         if (imminentEvent.getComponent().getComponentNumber() == 2) {
             if (c2w2.size() == 2) {
@@ -147,10 +182,12 @@ public class Simulation {
                     isI2Blocked = false;
                     i2IdleTime -= clock;
                 }
-                c2w2.offer(imminentEvent.getComponent());
-                SimEvent newEvent = new SimEvent(SimEvent.eventType.AW2, clock + 0, imminentEvent.getComponent());
-                FEL.offer(newEvent); //Schedule arrival at workstation AW1
-                newEvent = new SimEvent(SimEvent.eventType.AI2, clock + getRandomTime(insp22Lambda), Component.getComponent(2)); //get next component for inspection AI1
+                if(c1w2.size() < 2) {
+                    c2w2.offer(imminentEvent.getComponent());
+                    SimEvent newEvent = new SimEvent(SimEvent.eventType.AW2, clock + 0, imminentEvent.getComponent());
+                    FEL.offer(newEvent); //Schedule arrival at workstation AW1
+                    newEvent = new SimEvent(SimEvent.eventType.AI2, clock + getRandomTime(insp22Lambda), Component.getComponent(2)); //get next component for inspection AI1
+                }
             }
         } else {
             if (c3w3.size() == 2) {
@@ -159,16 +196,17 @@ public class Simulation {
                     i2IdleTime += clock;
                 }
             } else {
-                if(isI2Blocked){
+                if (isI2Blocked) {
                     isI2Blocked = false;
                     i2IdleTime -= clock;
                 }
-                c3w3.offer(imminentEvent.getComponent());
-                SimEvent newEvent = new SimEvent(SimEvent.eventType.AW3, clock + 0, imminentEvent.getComponent());
-                FEL.offer(newEvent); //Schedule arrival at workstation AW1
-                newEvent = new SimEvent(SimEvent.eventType.AI2, clock + getRandomTime(insp23Lambda), Component.getComponent(2));
+                if (c1w3.size() < 2) {
+                    c3w3.offer(imminentEvent.getComponent());
+                    SimEvent newEvent = new SimEvent(SimEvent.eventType.AW3, clock + 0, imminentEvent.getComponent());
+                    FEL.offer(newEvent); //Schedule arrival at workstation AW1
+                    newEvent = new SimEvent(SimEvent.eventType.AI2, clock + getRandomTime(insp23Lambda), Component.getComponent(2));
+                }
             }
-
         }
     }
 
@@ -190,11 +228,15 @@ public class Simulation {
         int c1w1Size = c1w1.size();
         int c1w2Size = c1w2.size();
         int c1w3Size = c1w3.size();
-        if(c1w1Size < c1w2Size && c1w1Size < c1w3Size){
+        if(c1w1Size < c1w2Size && c1w1Size < c1w3Size){ //if c1w1 is smallest
             return 1;
-        }else if(c1w2Size < c1w1Size && c1w2Size < c1w3Size){
+        }else if(c1w1Size == c1w2Size && c1w1Size == c1w3Size){ // IN CASE OF A TIE (POLICY)
+            return 1; //return c1w1.
+        }else if(c1w2Size == c1w3Size){
             return 2;
-        }else{
+        }else if(c1w2Size < c1w1Size && c1w2Size < c1w3Size){ //if c1w2 is smallest
+            return 2;
+        }else{ //if c1w3 is smallest
             return 3;
         }
     }
@@ -205,34 +247,7 @@ public class Simulation {
         FEL.offer(evt);  //Add EI1 to fel
     }
 
-    //Component 1 leaves inspector 1 and enters shortest queue
-    private static void ProcessEI1(SimEvent imminentEvent) {
-        if(c1w1.size() == 2 && c1w2.size()==2 && c1w3.size()==2){
-            isI1Blocked = true;
-            i1IdleTime += clock;
-        }else{
-            if(isI1Blocked){
-                i1IdleTime -= clock;
-                isI1Blocked = false;
-            }
-            int smallest = getSmallestQueue();
-            switch(smallest){
-                case 1:
-                    c1w1.offer(imminentEvent.getComponent());
-                    break;
-                case 2:
-                    c1w2.offer(imminentEvent.getComponent());
-                    break;
-                case 3:
-                    c1w3.offer(imminentEvent.getComponent());
-                    break;
-            }
 
-            SimEvent newEvent = new SimEvent(SimEvent.eventType.AW1, clock + 0, imminentEvent.getComponent());
-            FEL.offer(newEvent); //Schedule arrival at workstation AW1
-            newEvent = new SimEvent(SimEvent.eventType.AI1, clock + getRandomTime(insp1Lambda), Component.getComponent(1)); //get next component for inspection AI1
-        }
-    }
 
     private static void ProcessES(SimEvent imminentEvent) {
         System.out.print("Simulation finished at: " + clock + "\nProduct1 produced = " + p1
