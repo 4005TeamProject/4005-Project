@@ -39,7 +39,7 @@ public class Simulation {
         initialization();
 
         //Main while loop
-        while ((clock/60<=1)){
+        while ((clock/60<=7)){
             SimEvent imminentEvent = FEL.poll();
             clock = imminentEvent.getEventTime();
             ProcessSimEvent(imminentEvent);
@@ -80,7 +80,6 @@ public class Simulation {
     }
 
     private static void ProcessEW1(SimEvent imminentEvent) {
-        clock += imminentEvent.getEventTime();
         Component componentConsumed = c1w1.poll();
         p1 += 1;
         isW1busy = false;
@@ -89,14 +88,12 @@ public class Simulation {
     }
 
     private static void ProcessAW1(SimEvent imminentEvent) {
-        clock += imminentEvent.getEventTime();
         SimEvent newEvent = new SimEvent(SimEvent.eventType.EW1, clock + getRandomTime(workst1Lambda), imminentEvent.getComponent());
         FEL.offer(newEvent); //Schedule arrival at workstation AW1
     }
 
     //Component 1 leaves inspector 1 and enters shortest queue
     private static void ProcessEI1(SimEvent imminentEvent) {
-        clock += imminentEvent.getEventTime();
         if(c1w1.size() == 2){
             isI1Blocked = true;
         }else{
@@ -108,7 +105,6 @@ public class Simulation {
     }
 
     private static void ProcessAI1(SimEvent imminentEvent) {
-        clock += imminentEvent.getEventTime();
         double WET = getRandomTime(insp1Lambda);
         SimEvent evt = new SimEvent(SimEvent.eventType.EI1, clock+WET, Component.getComponent(1));
         FEL.offer(evt);  //Add EI1 to fel
