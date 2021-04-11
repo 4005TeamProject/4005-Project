@@ -193,7 +193,7 @@ public class Simulation {
         if(c1w1Size < c1w2Size && c1w1Size < c1w3Size){
             return 1;
         }else if(c1w2Size < c1w1Size && c1w2Size < c1w3Size){
-            return 1;
+            return 2;
         }else{
             return 3;
         }
