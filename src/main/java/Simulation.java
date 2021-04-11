@@ -123,8 +123,15 @@ public class Simulation {
     }
 
     private static void ProcessAI2(SimEvent imminentEvent) {
-        double WET = getRandomTime(insp22Lambda); //TODO fix this
-        SimEvent evt = new SimEvent(SimEvent.eventType.EI2, clock+WET, Component.getComponent(2));
+        Component temp = Component.getComponent(2);
+        double WET;
+        if(temp.getComponentNumber() == 2){
+            WET = getRandomTime(insp22Lambda);
+        }else{
+            WET = getRandomTime(insp23Lambda);
+        }
+
+        SimEvent evt = new SimEvent(SimEvent.eventType.EI2, clock+WET, temp);
         FEL.offer(evt);  //Add EI1 to fel
     }
 
@@ -277,8 +284,14 @@ public class Simulation {
         SimEvent evt = new SimEvent(SimEvent.eventType.EI1, clock+WET, Component.getComponent(1));
         FEL.offer(evt);  //Add EI1 to fel
 
-        WET = getRandomTime(insp22Lambda); //TODO fix this
-        evt = new SimEvent(SimEvent.eventType.EI2, clock+WET, Component.getComponent(2));
+
+        Component temp = Component.getComponent(2);
+        if(temp.getComponentNumber() == 2){
+            WET = getRandomTime(insp22Lambda);
+        }else{
+            WET = getRandomTime(insp23Lambda);
+        }
+        evt = new SimEvent(SimEvent.eventType.EI2, clock+WET, temp);
         FEL.offer(evt);  //Add EI1 to fel
 
     }
