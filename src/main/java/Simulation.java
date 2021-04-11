@@ -297,8 +297,17 @@ public class Simulation {
     }
 
     private static void GenerateReport() {
-        System.out.print("Time elapsed:" + clock +"\nProduct1 produced = " + p1
-                + "\nProduct2 produced = " + p2 + "\nProduct3 produced = " + p3);
+        System.out.println("");
+        System.out.println("Time elapsed (unit time): " + clock + " (7 Days)");
+        System.out.println("");
+        System.out.println("Total products produced per unit time = " + (p1 + p2 + p3));
+        System.out.println("");
+        System.out.println("Product 1 produced per unit time = " + p1);
+        System.out.println("Product 2 produced per unit time= " + p2 );
+        System.out.println("Product 3 produced per unit time = " + p3);
+
+
+
     }
 
 
