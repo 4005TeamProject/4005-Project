@@ -9,9 +9,15 @@ import java.util.Random;
 //This class represents the simulation model
 public class Simulation {
 
+    private static final double insp1Lambda = 0.0965;
+    private static final double insp22Lambda = 0.0643;
+    private static final double insp23Lambda = 0.0485;
+    private static final double workst1Lambda = 0.2172;
+    private static final double workst2Lambda = 0.09015;
+    private static final double workst3Lambda = 0.113693;
 
     private static double clock;
-    private static int workingHours, currentDay, simDay;
+    private static int currentDay, simDay;
 
     //Future Event List
     private static Queue<SimEvent> FEL;
@@ -24,9 +30,6 @@ public class Simulation {
 
     //Two more component queues for insp1 and insp2
     private static Queue<Component> IQ1, IQ2;
-
-    //Rng for time taken by inspection and workstations
-    private static Random RNGInsp1, RNGInsp2, RNGWork1, RNGWork2, RNGWork3 ;
 
     //Last time inspectors/workstations were idle.
     private static int lastI1Idle, lastI2idle, lastW1Idle, lastW2Idle, lastW3Idle;
@@ -44,18 +47,10 @@ public class Simulation {
     //Variables for the required metrics, statistics, and counters (B = busy, U = util)
     private static double BI1, BI2, BW1, BW2, BW3, UI1, UI2, UW1, UW2, UW3, p1, p2, p3;
 
-    //Filereaders for the time data files
-    private static BufferedReader servInsp23Reader;
-    private static BufferedReader servInsp22Reader;
-    private static BufferedReader servInsp1Reader;
-    private static BufferedReader ws1Reader;
-    private static BufferedReader ws2Reader;
-    private static BufferedReader ws3Reader;
 
 
     public static void main(String[] args) {
         clock = 0; //start clock at 0
-        workingHours=0;
         currentDay=1;
         simDay=7; //simulate 1 week
         lastI1Idle=0;
@@ -68,11 +63,6 @@ public class Simulation {
         isW1busy=false;
         isW2busy=false;
         isW3busy=false;
-        RNGInsp1= new Random();
-        RNGInsp2= new Random();
-        RNGWork1= new Random();
-        RNGWork2= new Random();
-        RNGWork3= new Random();
         FEL = new PriorityQueue<>();
         IQ1 = new LinkedList<>();
         IQ2 = new LinkedList<>();
@@ -95,17 +85,6 @@ public class Simulation {
         p2 = 0;
         p3 = 0;
 
-//        try {
-//            servInsp1Reader = new BufferedReader(new FileReader("servinsp1.txt"));
-//            servInsp22Reader = new BufferedReader(new FileReader("servinsp22.txt"));
-//            servInsp23Reader = new BufferedReader(new FileReader("servinsp23.txt"));
-//            ws1Reader = new BufferedReader(new FileReader("ws1.txt"));
-//            ws2Reader = new BufferedReader(new FileReader("ws2.txt"));
-//            ws3Reader = new BufferedReader(new FileReader("ws3.txt"));
-//        }catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-
 
         initialization();
 
@@ -118,6 +97,8 @@ public class Simulation {
     }
 
     private static void GenerateReport() {
+        System.out.print("Time elapsed:" + clock +"\nProduct1 produced = " + p1
+                + "\nProduct2 produced = " + p2 + "\nProduct3 produced = " + p3);
     }
 
     private static void ProcessSimEvent(SimEvent imminentEvent) {
@@ -189,10 +170,10 @@ public class Simulation {
             if(c2w2.size() < 2){
                 imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Buffer);
                 c2w2.offer(imminentEvent.getComponent());
-                double WET = getRandomTime(WTD, RNGWork2);
+                double WET = getRandomTime(workst2Lambda);
                 SimEvent evt = new SimEvent(SimEvent.eventType.EW2, clock+WET, imminentEvent.getComponent());
                 FEL.offer(evt);
-                evt = new SimEvent(SimEvent.eventType.AI1, 0, imminentEvent.getComponent());
+                evt = new SimEvent(SimEvent.eventType.AI2, 0, imminentEvent.getComponent());
                 FEL.offer(evt);
                 isI2busy = false;
                 isW2busy = true;
@@ -204,7 +185,7 @@ public class Simulation {
             if (c3w3.size() < 2) {
                 imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Buffer);
                 c3w3.offer(imminentEvent.getComponent());
-                double WET = getRandomTime(WTD, RNGWork3);
+                double WET = getRandomTime(workst3Lambda);
                 SimEvent evt = new SimEvent(SimEvent.eventType.EW3, clock+WET, imminentEvent.getComponent());
                 FEL.offer(evt);
                 evt = new SimEvent(SimEvent.eventType.AI2, 0, imminentEvent.getComponent());
@@ -224,7 +205,7 @@ public class Simulation {
         if(c1w1.size() < 2 && c1w1.size() < c1w2.size() && c1w1.size() < c1w3.size()){
             imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Buffer);
             c1w1.offer(imminentEvent.getComponent());
-            double WET = getRandomTime(WTD, RNGWork1);
+            double WET = getRandomTime(workst1Lambda);
             SimEvent evt = new SimEvent(SimEvent.eventType.EW1, clock+WET, imminentEvent.getComponent());
             FEL.offer(evt);
             evt = new SimEvent(SimEvent.eventType.AI1, 0, c1w1.poll());
@@ -234,7 +215,7 @@ public class Simulation {
         }else if(c1w2.size() < 2 && c1w2.size() < c1w1.size() && c1w2.size() < c1w3.size() ){
             imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Buffer);
             c1w2.offer(imminentEvent.getComponent());
-            double WET = getRandomTime(WTD, RNGWork2);
+            double WET = getRandomTime(workst2Lambda);
             SimEvent evt = new SimEvent(SimEvent.eventType.EW2, clock+WET, imminentEvent.getComponent());
             FEL.offer(evt);
             evt = new SimEvent(SimEvent.eventType.AI1, 0, c1w2.poll());
@@ -243,7 +224,7 @@ public class Simulation {
         }else if(c1w2.size() < 2 && c1w3.size() < c1w1.size() && c1w3.size() < c1w2.size() ){
             imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Buffer);
             c1w3.offer(imminentEvent.getComponent());
-            double WET = getRandomTime(WTD, RNGWork3);
+            double WET = getRandomTime(workst3Lambda);
             SimEvent evt = new SimEvent(SimEvent.eventType.EW3, clock+WET, imminentEvent.getComponent());
             FEL.offer(evt);
             evt = new SimEvent(SimEvent.eventType.AI1, 0, c1w3.poll());
@@ -278,14 +259,10 @@ public class Simulation {
         IQ1.offer(imminentEvent.getComponent());
     }
 
-    private static double getRandomTime(double arr[][], Random RNG){
-        double temp = RNG.nextDouble();
-        for (int i = 0; i < arr.length; i++){
-            if (Double.compare(temp, arr[i][1]) < 0){
-                return arr[i][0];
-            }
-        }
-        return arr[arr.length-1][0];
+
+    private static double getRandomTime(double lambda){
+        InputGenerator ig = new InputGenerator(lambda);
+        return ig.getInput();
     }
 
 
@@ -304,7 +281,7 @@ public class Simulation {
         //C1 is at insp1
         isI1busy = true;
         C1.setCurrentLocation(Component.serviceType.Inspection);
-        double WET = getRandomTime(ITD, RNGInsp1);
+        double WET = getRandomTime(insp1Lambda);
         SimEvent evt = new SimEvent(SimEvent.eventType.EI1, clock+WET, C1);
         FEL.offer(evt);
 
@@ -320,7 +297,7 @@ public class Simulation {
         //C5 is at insp2
         isI2busy = true;
         C5.setCurrentLocation(Component.serviceType.Inspection);
-        WET = getRandomTime(ITD, RNGInsp2);
+        WET = getRandomTime(insp22Lambda);
         evt = new SimEvent(SimEvent.eventType.EI2, clock+WET, C5);
         FEL.offer(evt);
 
@@ -342,23 +319,20 @@ public class Simulation {
     private static void ScheduleSimEvent(SimEvent.eventType ei1, Component component) {
         Integer newRN = -1;
         switch (ei1){
-            case EI1:
-                newRN = (int)getRandomTime(ITD, RNGWork1);
+            case AI1:
+                newRN = (int)getRandomTime(insp1Lambda);
                 break;
-            case EI2:
-                newRN = (int)getRandomTime(ITD, RNGInsp2);
-                break;
-            case BUF:
-                newRN = (int)getRandomTime(BTD, RNGInsp1);
+            case AI2:
+                newRN = (int)getRandomTime(insp22Lambda);
                 break;
             case EW1:
-                newRN = (int)getRandomTime(WTD, RNGWork1);
+                newRN = (int)getRandomTime(workst1Lambda);
                 break;
             case EW2:
-                newRN = (int)getRandomTime(WTD, RNGWork2);
+                newRN = (int)getRandomTime(workst2Lambda);
                 break;
             case EW3:
-                newRN = (int)getRandomTime(WTD, RNGWork3);
+                newRN = (int)getRandomTime(workst3Lambda);
                 break;
         }
         SimEvent newEvt= new SimEvent(ei1, clock+newRN, component);
