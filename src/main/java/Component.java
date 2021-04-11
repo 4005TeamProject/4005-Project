@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Component {
 
     /*
@@ -16,8 +18,19 @@ public class Component {
     }
 
     //@param componentNumber = {1, 2, 3}
-    public static Component getComponent(int componentNumber){
-        return new Component(componentNumber);
+    public static Component getComponent(int inspectorNum){
+        if(inspectorNum == 1){
+            return new Component(1);
+        }else{
+            Random random = new Random();
+            double temp = random.nextDouble();
+            if(temp <= 0.5){
+                return new Component(2);
+            }else{
+                return new Component(3);
+            }
+
+        }
     }
 
     public int getComponentID() {
