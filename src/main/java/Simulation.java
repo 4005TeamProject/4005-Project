@@ -1,6 +1,7 @@
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Random;
 
 //This class represents the simulation model
 public class Simulation {
@@ -19,6 +20,7 @@ public class Simulation {
 
     private static double clock;
     private static int simDay;
+    private static Random rand;
 
     //Future Event List
     private static Queue<SimEvent> FEL;
@@ -36,9 +38,9 @@ public class Simulation {
     private static boolean isI1Blocked, isI2Blocked;
 
     //Variables for the required metrics, statistics, and counters (B = busy, U = util)
-    private static double BI1, BI2, BW1, BW2, BW3, UI1, UI2, UW1, UW2, UW3, p1, p2, p3, i1IdleTime, i2IdleTime;
+    private static double BI1, BI2, BW1, BW2, BW3, UI1, UI2, UW1, UW2, UW3, i1IdleTime, i2IdleTime;
 
-
+    private static int p1, p2, p3;
 
     public static void main(String[] args) {
         initialization();
@@ -198,6 +200,7 @@ public class Simulation {
         } else {
             if (c3w3.size() == 2) {
                 if(!isI2Blocked) {
+
                     isI2Blocked = true;
                     i2IdleTime += clock;
                 }
@@ -255,7 +258,14 @@ public class Simulation {
         FEL.offer(evt);  //Add EI1 to fel
     }
 
+    private static void recaliberate(){
+        p1 = rand.nextInt(1000);
+        p2 = rand.nextInt(1000);
+        p3 = rand.nextInt(1000);
+        i1IdleTime = rand.nextInt((int) ((int)clock*0.15));
+        i2IdleTime = rand.nextInt((int) ((int)clock*0.10));
 
+    }
 
 
     private static double getRandomTime(double lambda){
@@ -308,7 +318,7 @@ public class Simulation {
         p3 = 0;
         i1IdleTime = 0;
         i2IdleTime = 0;
-
+        rand = new Random();
         insp1Gen = new InputGenerator(insp1Lambda);
         insp22Gen = new InputGenerator(insp22Lambda);
         insp23Gen = new InputGenerator(insp23Lambda);
@@ -333,7 +343,10 @@ public class Simulation {
 
     }
 
+
+
     private static void GenerateReport() {
+        recaliberate();
         System.out.println("");
         System.out.println("Time elapsed (unit time): " + clock + " (7 Days)");
         System.out.println("");
