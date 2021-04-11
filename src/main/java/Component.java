@@ -11,9 +11,13 @@ public class Component {
     private int componentNumber; // {1, 2, 3}
     private serviceType currentLocation;
 
-    public Component(int id, int componentNumber){
+    public Component(int componentNumber){
         this.componentNumber = componentNumber;
-        this.componentID = id;
+    }
+
+    //@param componentNumber = {1, 2, 3}
+    public static Component getComponent(int componentNumber){
+        return new Component(componentNumber);
     }
 
     public int getComponentID() {
