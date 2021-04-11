@@ -86,9 +86,6 @@ public class Simulation {
             case AW3:
                 ProcessAW3(imminentEvent);
                 break;
-            case ES:
-                ProcessES(imminentEvent);
-                break;
         }
     }
 
@@ -150,23 +147,31 @@ public class Simulation {
                 case 1:
                     if(c1w1.size() < 2) {
                         c1w1.offer(imminentEvent.getComponent());
+                        SimEvent newEvent = new SimEvent(SimEvent.eventType.AW1, clock + 0, imminentEvent.getComponent());
+                        FEL.offer(newEvent); //Schedule arrival at workstation AW1
                     }
                     break;
                 case 2:
                     if(c1w2.size() < 2) {
                         c1w2.offer(imminentEvent.getComponent());
+                        SimEvent newEvent = new SimEvent(SimEvent.eventType.AW2, clock + 0, imminentEvent.getComponent());
+                        FEL.offer(newEvent); //Schedule arrival at workstation AW1
                     }
                     break;
                 case 3:
                     if(c1w3.size() < 2) {
                         c1w3.offer(imminentEvent.getComponent());
+                        SimEvent newEvent = new SimEvent(SimEvent.eventType.AW3, clock + 0, imminentEvent.getComponent());
+                        FEL.offer(newEvent); //Schedule arrival at workstation AW1
                     }
                     break;
             }
 
-            SimEvent newEvent = new SimEvent(SimEvent.eventType.AW1, clock + 0, imminentEvent.getComponent());
+
+            SimEvent newEvent = new SimEvent(SimEvent.eventType.AI1, clock + getRandomTime(insp1Lambda), Component.getComponent(1)); //get next component for inspection AI1
             FEL.offer(newEvent); //Schedule arrival at workstation AW1
-            newEvent = new SimEvent(SimEvent.eventType.AI1, clock + getRandomTime(insp1Lambda), Component.getComponent(1)); //get next component for inspection AI1
+
+
         }
     }
 
@@ -182,11 +187,12 @@ public class Simulation {
                     isI2Blocked = false;
                     i2IdleTime -= clock;
                 }
-                if(c1w2.size() < 2) {
+                if(c2w2.size() < 2) {
                     c2w2.offer(imminentEvent.getComponent());
                     SimEvent newEvent = new SimEvent(SimEvent.eventType.AW2, clock + 0, imminentEvent.getComponent());
                     FEL.offer(newEvent); //Schedule arrival at workstation AW1
                     newEvent = new SimEvent(SimEvent.eventType.AI2, clock + getRandomTime(insp22Lambda), Component.getComponent(2)); //get next component for inspection AI1
+                    FEL.offer(newEvent); //Schedule arrival at workstation A1
                 }
             }
         } else {
@@ -200,11 +206,12 @@ public class Simulation {
                     isI2Blocked = false;
                     i2IdleTime -= clock;
                 }
-                if (c1w3.size() < 2) {
+                if (c3w3.size() < 2) {
                     c3w3.offer(imminentEvent.getComponent());
                     SimEvent newEvent = new SimEvent(SimEvent.eventType.AW3, clock + 0, imminentEvent.getComponent());
                     FEL.offer(newEvent); //Schedule arrival at workstation AW1
                     newEvent = new SimEvent(SimEvent.eventType.AI2, clock + getRandomTime(insp23Lambda), Component.getComponent(2));
+                    FEL.offer(newEvent); //Schedule arrival at workstation AW1
                 }
             }
         }
@@ -228,16 +235,17 @@ public class Simulation {
         int c1w1Size = c1w1.size();
         int c1w2Size = c1w2.size();
         int c1w3Size = c1w3.size();
-        if(c1w1Size < c1w2Size && c1w1Size < c1w3Size){ //if c1w1 is smallest
-            return 1;
-        }else if(c1w1Size == c1w2Size && c1w1Size == c1w3Size){ // IN CASE OF A TIE (POLICY)
+
+        if(c1w1Size == c1w2Size && c1w1Size == c1w3Size){ // IN CASE OF A TIE (POLICY)
             return 1; //return c1w1.
         }else if(c1w2Size == c1w3Size){
             return 2;
         }else if(c1w2Size < c1w1Size && c1w2Size < c1w3Size){ //if c1w2 is smallest
             return 2;
-        }else{ //if c1w3 is smallest
+        }else if(c1w3Size < c1w1Size && c1w3Size < c1w2Size){ //if c1w3 is smallest
             return 3;
+        }else{
+            return 1;
         }
     }
 
@@ -245,13 +253,6 @@ public class Simulation {
         double WET = getRandomTime(insp1Lambda);
         SimEvent evt = new SimEvent(SimEvent.eventType.EI1, clock+WET, Component.getComponent(1));
         FEL.offer(evt);  //Add EI1 to fel
-    }
-
-
-
-    private static void ProcessES(SimEvent imminentEvent) {
-        System.out.print("Simulation finished at: " + clock + "\nProduct1 produced = " + p1
-                + "\nProduct2 produced = " + p2 + "\nProduct3 produced = " + p3);
     }
 
 
