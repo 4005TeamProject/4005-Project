@@ -5,12 +5,17 @@ import java.util.Queue;
 //This class represents the simulation model
 public class Simulation {
 
+    //Inspectors and Workstations times distribution lambdas
     private static final double insp1Lambda = 0.0965;
     private static final double insp22Lambda = 0.0643;
     private static final double insp23Lambda = 0.0485;
     private static final double workst1Lambda = 0.2172;
     private static final double workst2Lambda = 0.09015;
     private static final double workst3Lambda = 0.113693;
+
+
+    //Inspectors and Workstations input generators
+    private static InputGenerator insp1Gen, insp22Gen, insp23Gen, workst1Gen, workst2Gen, workst3Gen;
 
     private static double clock;
     private static int simDay;
@@ -119,8 +124,23 @@ public class Simulation {
 
 
     private static double getRandomTime(double lambda){
-        InputGenerator ig = new InputGenerator(lambda);
-        return ig.getInput();
+
+        if(Double.compare(lambda,insp1Lambda)==0){
+             return insp1Gen.getInput();
+        }
+        else if(Double.compare(lambda,insp22Lambda)==0){
+            return insp22Gen.getInput();
+        }
+        else if(Double.compare(lambda,insp23Lambda)==0){
+            return insp23Gen.getInput();
+        }
+        else if(Double.compare(lambda,workst1Lambda)==0){
+            return workst1Gen.getInput();
+        }
+        else if(Double.compare(lambda,workst2Lambda)==0){
+            return workst2Gen.getInput();
+        }
+        return workst3Gen.getInput();
     }
 
 
@@ -151,6 +171,13 @@ public class Simulation {
         p1 = 0;
         p2 = 0;
         p3 = 0;
+
+        insp1Gen = new InputGenerator(insp1Lambda);
+        insp22Gen = new InputGenerator(insp22Lambda);
+        insp23Gen = new InputGenerator(insp23Lambda);
+        workst1Gen = new InputGenerator(workst1Lambda);
+        workst2Gen = new InputGenerator(workst2Lambda);
+        workst3Gen = new InputGenerator(workst3Lambda);
 
         //C1 is at insp1
         double WET = getRandomTime(insp1Lambda);
