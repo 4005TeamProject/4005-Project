@@ -93,7 +93,8 @@ public class Simulation {
     }
 
     private static void ProcessEW3(SimEvent imminentEvent) {
-        Component componentConsumed = c3w3.poll();
+        c3w3.poll();
+        c1w3.poll();
         p3 += 1;
         isW1busy = false;
         isI2Blocked=false;
@@ -102,7 +103,8 @@ public class Simulation {
     }
 
     private static void ProcessEW2(SimEvent imminentEvent) {
-        Component componentConsumed = c2w2.poll();
+        c2w2.poll();
+        c1w2.poll();
         p2 += 1;
         isW1busy = false;
         isI2Blocked=false;
@@ -121,7 +123,7 @@ public class Simulation {
     }
 
     private static void ProcessAI2(SimEvent imminentEvent) {
-        double WET = getRandomTime(insp22Lambda);
+        double WET = getRandomTime(insp22Lambda); //TODO fix this
         SimEvent evt = new SimEvent(SimEvent.eventType.EI2, clock+WET, Component.getComponent(2));
         FEL.offer(evt);  //Add EI1 to fel
     }
@@ -164,13 +166,39 @@ public class Simulation {
 
     //Component 1 leaves inspector 1 and enters shortest queue
     private static void ProcessEI1(SimEvent imminentEvent) {
-        if(c1w1.size() == 2){
+        if(c1w1.size() == 2 && c1w2.size()==2 && c1w3.size()==2){
             isI1Blocked = true;
         }else{
-            c1w1.offer(imminentEvent.getComponent());
+            int smallest = getSmallestQueue();
+            switch(smallest){
+                case 1:
+                    c1w1.offer(imminentEvent.getComponent());
+                    break;
+                case 2:
+                    c1w2.offer(imminentEvent.getComponent());
+                    break;
+                case 3:
+                    c1w3.offer(imminentEvent.getComponent());
+                    break;
+            }
+
             SimEvent newEvent = new SimEvent(SimEvent.eventType.AW1, clock + 0, imminentEvent.getComponent());
             FEL.offer(newEvent); //Schedule arrival at workstation AW1
             newEvent = new SimEvent(SimEvent.eventType.AI1, clock + getRandomTime(insp1Lambda), Component.getComponent(1)); //get next component for inspection AI1
+        }
+    }
+
+    //Returns 1, 2, 3 for c1w1,c1w2, and c1w3 respectively.
+    private static int getSmallestQueue() {
+        int c1w1Size = c1w1.size();
+        int c1w2Size = c1w2.size();
+        int c1w3Size = c1w3.size();
+        if(c1w1Size < c1w2Size && c1w1Size < c1w3Size){
+            return 1;
+        }else if(c1w2Size < c1w1Size && c1w2Size < c1w3Size){
+            return 1;
+        }else{
+            return 3;
         }
     }
 
@@ -249,7 +277,7 @@ public class Simulation {
         SimEvent evt = new SimEvent(SimEvent.eventType.EI1, clock+WET, Component.getComponent(1));
         FEL.offer(evt);  //Add EI1 to fel
 
-        WET = getRandomTime(insp22Lambda);
+        WET = getRandomTime(insp22Lambda); //TODO fix this
         evt = new SimEvent(SimEvent.eventType.EI2, clock+WET, Component.getComponent(2));
         FEL.offer(evt);  //Add EI1 to fel
 
