@@ -48,7 +48,6 @@ public class Simulation {
             SimEvent imminentEvent = FEL.poll();
             clock = imminentEvent.getEventTime();
             ProcessSimEvent(imminentEvent);
-            System.out.println("Clock: " + clock/60);
         }
         GenerateReport();
     }
@@ -59,6 +58,9 @@ public class Simulation {
         switch (imminentEvent.geteventType()){
             case AI1:
                 ProcessAI1(imminentEvent);
+                break;
+            case AI2:
+                ProcessAI2(imminentEvent);
                 break;
             case AW1:
                 ProcessAW1(imminentEvent);
@@ -78,9 +80,72 @@ public class Simulation {
             case EW3:
                 ProcessEW3(imminentEvent);
                 break;
+            case AW2:
+                ProcessAW2(imminentEvent);
+                break;
+            case AW3:
+                ProcessAW3(imminentEvent);
+                break;
             case ES:
                 ProcessES(imminentEvent);
                 break;
+        }
+    }
+
+    private static void ProcessEW3(SimEvent imminentEvent) {
+        Component componentConsumed = c3w3.poll();
+        p3 += 1;
+        isW1busy = false;
+        isI2Blocked=false;
+        SimEvent newEvent = new SimEvent(SimEvent.eventType.AI2, clock + 0, Component.getComponent(2));
+        FEL.offer(newEvent); //Schedule arrival at workstation AW1
+    }
+
+    private static void ProcessEW2(SimEvent imminentEvent) {
+        Component componentConsumed = c2w2.poll();
+        p2 += 1;
+        isW1busy = false;
+        isI2Blocked=false;
+        SimEvent newEvent = new SimEvent(SimEvent.eventType.AI2, clock + 0, Component.getComponent(2));
+        FEL.offer(newEvent); //Schedule arrival at workstation AW1
+    }
+
+    private static void ProcessAW3(SimEvent imminentEvent) {
+        SimEvent newEvent = new SimEvent(SimEvent.eventType.EW3, clock + getRandomTime(workst3Lambda), imminentEvent.getComponent());
+        FEL.offer(newEvent); //Schedule arrival at workstation AW1
+    }
+
+    private static void ProcessAW2(SimEvent imminentEvent) {
+        SimEvent newEvent = new SimEvent(SimEvent.eventType.EW2, clock + getRandomTime(workst2Lambda), imminentEvent.getComponent());
+        FEL.offer(newEvent); //Schedule arrival at workstation AW1
+    }
+
+    private static void ProcessAI2(SimEvent imminentEvent) {
+        double WET = getRandomTime(insp22Lambda);
+        SimEvent evt = new SimEvent(SimEvent.eventType.EI2, clock+WET, Component.getComponent(2));
+        FEL.offer(evt);  //Add EI1 to fel
+    }
+
+    private static void ProcessEI2(SimEvent imminentEvent) {
+        if (imminentEvent.getComponent().getComponentNumber() == 2) {
+            if (c2w2.size() == 2) {
+                isI2Blocked = true;
+            } else {
+                c2w2.offer(imminentEvent.getComponent());
+                SimEvent newEvent = new SimEvent(SimEvent.eventType.AW2, clock + 0, imminentEvent.getComponent());
+                FEL.offer(newEvent); //Schedule arrival at workstation AW1
+                newEvent = new SimEvent(SimEvent.eventType.AI2, clock + getRandomTime(insp22Lambda), Component.getComponent(2)); //get next component for inspection AI1
+            }
+        } else {
+            if (c3w3.size() == 2) {
+                isI2Blocked = true;
+            } else {
+                c3w3.offer(imminentEvent.getComponent());
+                SimEvent newEvent = new SimEvent(SimEvent.eventType.AW3, clock + 0, imminentEvent.getComponent());
+                FEL.offer(newEvent); //Schedule arrival at workstation AW1
+                newEvent = new SimEvent(SimEvent.eventType.AI2, clock + getRandomTime(insp23Lambda), Component.getComponent(2));
+            }
+
         }
     }
 
@@ -179,9 +244,13 @@ public class Simulation {
         workst2Gen = new InputGenerator(workst2Lambda);
         workst3Gen = new InputGenerator(workst3Lambda);
 
-        //C1 is at insp1
+
         double WET = getRandomTime(insp1Lambda);
         SimEvent evt = new SimEvent(SimEvent.eventType.EI1, clock+WET, Component.getComponent(1));
+        FEL.offer(evt);  //Add EI1 to fel
+
+        WET = getRandomTime(insp22Lambda);
+        evt = new SimEvent(SimEvent.eventType.EI2, clock+WET, Component.getComponent(2));
         FEL.offer(evt);  //Add EI1 to fel
 
     }
@@ -189,57 +258,6 @@ public class Simulation {
     private static void GenerateReport() {
         System.out.print("Time elapsed:" + clock +"\nProduct1 produced = " + p1
                 + "\nProduct2 produced = " + p2 + "\nProduct3 produced = " + p3);
-    }
-
-    private static void ProcessEI2(SimEvent imminentEvent) {
-        if(imminentEvent.getComponent().getComponentNumber() == 2){
-            if(c2w2.size() < 2){
-                imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Buffer);
-                c2w2.offer(imminentEvent.getComponent());
-                double WET = getRandomTime(workst2Lambda);
-                SimEvent evt = new SimEvent(SimEvent.eventType.EW2, clock+WET, imminentEvent.getComponent());
-                FEL.offer(evt);
-                evt = new SimEvent(SimEvent.eventType.AI2, 0, imminentEvent.getComponent());
-                FEL.offer(evt);
-                isW2busy = true;
-            }else {
-                imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Inspection);
-                isI1Blocked = true;
-            }
-        }else if(imminentEvent.getComponent().getComponentNumber() == 3) {
-            if (c3w3.size() < 2) {
-                imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Buffer);
-                c3w3.offer(imminentEvent.getComponent());
-                double WET = getRandomTime(workst3Lambda);
-                SimEvent evt = new SimEvent(SimEvent.eventType.EW3, clock+WET, imminentEvent.getComponent());
-                FEL.offer(evt);
-                evt = new SimEvent(SimEvent.eventType.AI2, 0, imminentEvent.getComponent());
-                FEL.offer(evt);
-                //isI2busy = false;
-                isW3busy = true;
-            }else{
-                imminentEvent.getComponent().setCurrentLocation(Component.serviceType.Inspection);
-                //isI2busy = true;
-                //TODO need to block the inspector somehow
-            }
-        }
-    }
-
-    private static void ProcessEW3(SimEvent imminentEvent) {
-        Component componentConsumed = c1w3.poll();
-        Component componentConsumed2 = c3w3.poll();
-        p3 += 1;
-        isW3busy = false;
-        System.out.print("Time: " + clock + "Product3 produced");
-    }
-
-    private static void ProcessEW2(SimEvent imminentEvent) {
-        Component componentConsumed = c1w2.poll();
-        Component componentConsumed2 = c2w2.poll();
-        System.out.print("Time: " + clock + "Product2 produced");
-        p2 += 1;
-        isW2busy = false;
-
     }
 
 
